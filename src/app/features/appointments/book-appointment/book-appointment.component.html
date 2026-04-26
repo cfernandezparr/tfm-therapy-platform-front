@@ -1,0 +1,38 @@
+<div class="booking">
+
+  <h1>Reservar cita</h1>
+
+  <div class="section">
+    <label>Seleccionar terapeuta</label>
+    <select [(ngModel)]="selectedTherapistId" (change)="onTherapistChange()">
+      <option [ngValue]="null">Selecciona...</option>
+      <option *ngFor="let t of therapists" [ngValue]="t.id">
+        {{ t.email }}
+      </option>
+    </select>
+  </div>
+
+  <div class="section">
+    <label>Fecha</label>
+    <input type="date" [(ngModel)]="selectedDate" (change)="onDateChange()" [min]="minDate">
+  </div>
+
+  <div class="section">
+    <label>Hora</label>
+    <select [(ngModel)]="selectedHour">
+      <option [ngValue]="null">Selecciona...</option>
+      <option *ngFor="let h of availableHours" [ngValue]="h">
+        {{ h }}:00
+      </option>
+    </select>
+  </div>
+
+  <div *ngIf="selectedDate && availableHours.length === 0">
+    No hay disponibilidad para este día
+  </div>
+
+  <button (click)="createAppointment()">Reservar</button>
+
+  <p class="error" *ngIf="error">{{ error }}</p>
+
+</div>

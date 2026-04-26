@@ -1,0 +1,105 @@
+<div class="dashboard" *ngIf="user">
+
+  <h1>Dashboard</h1>
+
+  <div class="user-info">
+    <p><strong>Email:</strong> {{ user.email }}</p>
+    <p><strong>Rol:</strong> {{ user.role }}</p>
+  </div>
+
+  <!-- USER -->
+  <div *ngIf="isUser()">
+
+    <div class="section">
+      <h2>Próximas citas</h2>
+
+      <div *ngIf="appointments.length === 0" class="empty">
+        No tienes citas todavía
+      </div>
+
+      <div *ngFor="let appt of appointments" class="card">
+        <p><strong>Fecha:</strong> {{ appt.appointmentDate }}</p>
+        <p><strong>Estado:</strong> {{ appt.status }}</p>
+
+        <div *ngIf="getSessionLink(appt.id)">
+          <a [href]="getSessionLink(appt.id)" target="_blank">
+            Entrar a la sesión
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button routerLink="/book">Reservar cita</button>
+    </div>
+
+    <div class="actions" *ngIf="!user.therapistRequested">
+      <button (click)="requestTherapist()">
+        Solicitar ser terapeuta (enviar documentación)
+      </button>
+    </div>
+
+    <div class="actions" *ngIf="user.therapistRequested === true">
+      <p>Solicitud en proceso de aprobación</p>
+      <button disabled>Solicitud enviada</button>
+    </div>
+
+  </div>
+
+  <!-- THERAPIST -->
+  <div *ngIf="isTherapist()">
+
+    <div class="section">
+      <h2>Agenda</h2>
+
+      <div *ngIf="appointments.length === 0" class="empty">
+        No tienes citas programadas
+      </div>
+
+      <div *ngFor="let appt of appointments" class="card">
+        <p><strong>Fecha:</strong> {{ appt.appointmentDate }}</p>
+        <p><strong>Estado:</strong> {{ appt.status }}</p>
+
+        <div *ngIf="getSessionLink(appt.id)">
+          <a [href]="getSessionLink(appt.id)" target="_blank">
+            Ir a la sesión
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button routerLink="/availability">
+        Configurar disponibilidad
+      </button>
+    </div>
+
+  </div>
+
+  <!-- ADMIN -->
+  <div *ngIf="isAdmin()">
+
+    <div class="section">
+      <h2>Solicitudes de terapeuta</h2>
+
+      <div *ngIf="getRequestedUsers().length === 0">
+        No hay solicitudes pendientes
+      </div>
+
+      <div *ngFor="let u of getRequestedUsers()" class="card">
+        <p><strong>Email:</strong> {{ u.email }}</p>
+
+        <button (click)="approveTherapist(u.id)">
+          Aprobar
+        </button>
+
+        <button (click)="rejectTherapist(u.id)">
+          Rechazar
+        </button>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

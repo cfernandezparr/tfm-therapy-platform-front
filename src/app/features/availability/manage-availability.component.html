@@ -1,0 +1,21 @@
+<div class="availability">
+
+  <h1>Configurar disponibilidad</h1>
+
+  <div *ngFor="let day of days" class="day-block">
+    <h3>{{ day }}</h3>
+
+    <div class="hours">
+      <button
+        *ngFor="let hour of hours"
+        (click)="toggleSlot(day, hour)"
+        [class.selected]="isSelected(day, hour)">
+        {{ hour }}:00
+      </button>
+    </div>
+
+  </div>
+
+  <button (click)="save()">Guardar disponibilidad</button>
+
+</div>
