@@ -66,9 +66,13 @@ export class NavbarComponent implements OnInit {
   }
 
   logout() {
-    this.authService.logout();
-    this.router.navigate(['/login']);
-  }
+  this.user = undefined;
+  this.dropdownOpen = false;
+
+  this.authService.logout();
+
+  window.location.href = '/login';
+}
 
   isLogged(): boolean {
     return !!this.authService.getToken();
