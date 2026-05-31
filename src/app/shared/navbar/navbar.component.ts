@@ -1,6 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule, Router } from '@angular/router';
+import {
+  RouterModule,
+  Router,
+  NavigationEnd
+} from '@angular/router';
+import { filter } from 'rxjs/operators';
+
 import { AuthService } from '../../core/services/auth.service';
 import { UserService, User } from '../../core/services/user.service';
 
@@ -20,7 +26,23 @@ export class NavbarComponent implements OnInit {
     private authService: AuthService,
     private userService: UserService,
     private router: Router
-  ) {}
+  ) {
+
+    this.router.events
+      .pipe(
+        filter(event => event instanceof NavigationEnd)
+      )
+      .subscribe(() => {
+
+        if (this.isLogged()) {
+          this.loadUser();
+        } else {
+          this.user = undefined;
+        }
+
+      });
+
+  }
 
   ngOnInit() {
     if (this.isLogged()) {
@@ -66,13 +88,9 @@ export class NavbarComponent implements OnInit {
   }
 
   logout() {
-  this.user = undefined;
-  this.dropdownOpen = false;
-
-  this.authService.logout();
-
-  window.location.href = '/login';
-}
+    this.authService.logout();
+    this.router.navigate(['/login']);
+  }
 
   isLogged(): boolean {
     return !!this.authService.getToken();
