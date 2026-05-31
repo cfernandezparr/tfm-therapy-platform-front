@@ -7,9 +7,14 @@ export interface User {
   email: string;
   firstName?: string;
   lastName?: string;
+  avatarUrl?: string;
   role: 'USER' | 'THERAPIST' | 'ADMIN';
   enabled?: boolean;
   therapistRequested?: boolean;
+}
+
+export interface AvatarUpdateDTO {
+  avatarUrl: string;
 }
 
 @Injectable({
@@ -39,5 +44,12 @@ export class UserService {
 
   requestTherapist() {
     return this.http.post(`${this.apiUrl}/request-therapist`, {});
+  }
+
+  updateAvatar(avatarUrl: string) {
+    return this.http.put(
+      `${this.apiUrl}/avatar`,
+      { avatarUrl }
+    );
   }
 }

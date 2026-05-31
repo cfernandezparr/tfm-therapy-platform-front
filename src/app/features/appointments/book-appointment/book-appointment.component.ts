@@ -8,6 +8,9 @@ import { AvailabilityService, AvailabilitySlot } from '../../../core/services/av
 interface Therapist {
   id: number;
   email: string;
+  firstName?: string;
+  lastName?: string;
+  avatarUrl?: string;
   role: string;
 }
 
@@ -23,6 +26,9 @@ export class BookAppointmentComponent implements OnInit {
   therapists: Therapist[] = [];
   availability: AvailabilitySlot[] = [];
   availableHours: number[] = [];
+
+  selectedTherapist: Therapist | null = null;
+  showModal = false;
 
   selectedTherapistId: number | null = null;
   selectedDate: string = '';
@@ -52,6 +58,24 @@ export class BookAppointmentComponent implements OnInit {
         next: (data) => this.therapists = data,
         error: () => this.error = 'Error cargando terapeutas'
       });
+  }
+
+  openBookingModal(therapist: Therapist) {
+
+    this.selectedTherapist = therapist;
+    this.selectedTherapistId = therapist.id;
+
+    this.selectedDate = '';
+    this.selectedHour = null;
+    this.availableHours = [];
+
+    this.showModal = true;
+
+    this.onTherapistChange();
+  }
+
+  closeModal() {
+    this.showModal = false;
   }
 
   onTherapistChange() {
@@ -105,6 +129,7 @@ export class BookAppointmentComponent implements OnInit {
   }
 
   createAppointment() {
+
     if (!this.selectedTherapistId || !this.selectedDate || this.selectedHour === null) {
       this.error = 'Completa todos los campos';
       return;
@@ -130,6 +155,7 @@ export class BookAppointmentComponent implements OnInit {
               this.http.post(`${this.apiUrl}/payments/confirm/${appointmentId}`, {})
                 .subscribe({
                   next: () => {
+                    this.showModal = false;
                     this.router.navigate(['/dashboard']);
                   },
                   error: () => {

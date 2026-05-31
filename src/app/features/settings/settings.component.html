@@ -1,0 +1,28 @@
+<div class="settings" *ngIf="user">
+
+  <h1>Modificar foto de perfil</h1>
+
+  <div class="avatar-section">
+
+    <img 
+      [src]="user.avatarUrl ?? 'https://ui-avatars.com/api/?name=' + user.firstName + '+' + user.lastName"
+      class="avatar-img"
+    >
+
+  </div>
+
+  <div class="form">
+
+    <input 
+      type="text"
+      [(ngModel)]="avatarUrl"
+      placeholder="Introduce la URL de la imagen"
+    >
+
+    <button (click)="updateAvatar()">
+      Guardar
+    </button>
+
+  </div>
+
+</div>

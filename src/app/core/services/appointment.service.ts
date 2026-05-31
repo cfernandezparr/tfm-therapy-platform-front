@@ -2,9 +2,12 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-interface Appointment {
+export interface Appointment {
+  id: number;
   appointmentDate: string;
   status: string;
+  patientEmail?: string;
+  therapistEmail?: string;
 }
 
 @Injectable({
@@ -18,5 +21,13 @@ export class AppointmentService {
 
   getMyAppointments(): Observable<Appointment[]> {
     return this.http.get<Appointment[]>(`${this.apiUrl}/me`);
+  }
+
+  getAll(): Observable<Appointment[]> {
+    return this.http.get<Appointment[]>(this.apiUrl);
+  }
+
+  cancelAppointment(id: number): Observable<void> {
+    return this.http.put<void>(`${this.apiUrl}/${id}/cancel`, {});
   }
 }

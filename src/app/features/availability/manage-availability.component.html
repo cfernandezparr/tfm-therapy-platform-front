@@ -1,21 +1,42 @@
-<div class="availability">
+<div class="availability-container">
 
-  <h1>Configurar disponibilidad</h1>
+  <div class="availability-card">
 
-  <div *ngFor="let day of days" class="day-block">
-    <h3>{{ day }}</h3>
+    <h1>Configurar disponibilidad</h1>
 
-    <div class="hours">
+    <p class="subtitle">
+      Selecciona las franjas horarias en las que deseas aceptar citas.
+    </p>
+
+    <div *ngFor="let day of days" class="day-block">
+
+      <h3>{{ getDayName(day) }}</h3>
+
+      <div class="hours">
+
+        <button
+          *ngFor="let hour of hours"
+          (click)="toggleSlot(day, hour)"
+          [class.selected]="isSelected(day, hour)"
+        >
+          {{ hour }}:00
+        </button>
+
+      </div>
+
+    </div>
+
+    <div class="save-container">
+
       <button
-        *ngFor="let hour of hours"
-        (click)="toggleSlot(day, hour)"
-        [class.selected]="isSelected(day, hour)">
-        {{ hour }}:00
+        class="save-btn"
+        (click)="save()"
+      >
+        Guardar cambios
       </button>
+
     </div>
 
   </div>
-
-  <button (click)="save()">Guardar disponibilidad</button>
 
 </div>

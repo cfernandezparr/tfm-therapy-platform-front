@@ -16,6 +16,7 @@ export class DashboardComponent implements OnInit {
 
   user!: User;
   appointments: any[] = [];
+  adminAppointments: any[] = [];
   sessions: Session[] = [];
   users: User[] = [];
 
@@ -38,6 +39,7 @@ export class DashboardComponent implements OnInit {
 
         if (this.isAdmin()) {
           this.loadUsers();
+          this.loadAdminAppointments();
         }
       }
     });
@@ -49,6 +51,12 @@ export class DashboardComponent implements OnInit {
     });
   }
 
+  loadAdminAppointments() {
+    this.appointmentService.getAll().subscribe({
+      next: (data) => this.adminAppointments = data
+    });
+  }
+
   loadSessions() {
     this.sessionService.getAll().subscribe({
       next: (data) => this.sessions = data
@@ -56,8 +64,85 @@ export class DashboardComponent implements OnInit {
   }
 
   getSessionLink(appointmentId: number): string | null {
-    const session = this.sessions.find(s => s.appointmentId === appointmentId);
+
+    const session = this.sessions.find(
+      s => s.appointmentId === appointmentId
+    );
+
     return session ? session.videoLink : null;
+  }
+
+  getSessionId(appointmentId: number): number | null {
+
+    const session = this.sessions.find(
+      s => s.appointmentId === appointmentId
+    );
+
+    return session ? session.id : null;
+  }
+
+  canJoinSession(appt: any): boolean {
+
+    return (
+      appt.status === 'CONFIRMED' &&
+      this.getSessionLink(appt.id) !== null
+    );
+  }
+
+  getSortedAppointments() {
+
+    const order: any = {
+      CONFIRMED: 1,
+      COMPLETED: 2,
+      CANCELLED: 3
+    };
+
+    return [...this.appointments]
+      .sort((a, b) => order[a.status] - order[b.status]);
+  }
+
+  getSortedAdminAppointments() {
+
+    const order: any = {
+      CONFIRMED: 1,
+      COMPLETED: 2,
+      CANCELLED: 3
+    };
+
+    return [...this.adminAppointments]
+      .sort((a, b) => order[a.status] - order[b.status]);
+  }
+
+  getStatusClass(status: string) {
+
+    switch (status) {
+
+      case 'CONFIRMED':
+        return 'confirmed-card';
+
+      case 'COMPLETED':
+        return 'completed-card';
+
+      case 'CANCELLED':
+        return 'cancelled-card';
+
+      default:
+        return '';
+    }
+  }
+
+  cancelAppointment(id: number) {
+
+    if (!confirm('¿Cancelar esta cita?')) {
+      return;
+    }
+
+    this.appointmentService.cancelAppointment(id).subscribe({
+      next: () => {
+        this.loadAdminAppointments();
+      }
+    });
+
   }
 
   loadUsers() {
@@ -91,7 +176,9 @@ export class DashboardComponent implements OnInit {
   }
 
   getRequestedUsers(): User[] {
-    return this.users.filter(u => u.therapistRequested === true);
+    return this.users.filter(
+      u => u.therapistRequested === true
+    );
   }
 
   isUser() {

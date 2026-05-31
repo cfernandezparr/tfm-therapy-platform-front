@@ -1,0 +1,34 @@
+<div class="notes-container">
+
+  <div class="notes-card">
+
+    <h1>Notas de la sesión</h1>
+
+    <p class="subtitle">
+      Añade observaciones sobre la sesión realizada.
+    </p>
+
+    <textarea
+      [(ngModel)]="notes"
+      rows="12"
+      placeholder="Escribe aquí las observaciones de la sesión..."
+    >
+    </textarea>
+
+    <button
+      class="save-btn"
+      (click)="saveNotes()"
+    >
+      Guardar notas
+    </button>
+
+    <div
+      *ngIf="successMessage"
+      class="success"
+    >
+      {{ successMessage }}
+    </div>
+
+  </div>
+
+</div>

@@ -7,6 +7,7 @@ export interface Session {
   videoLink: string;
   startTime: string;
   endTime: string;
+  notes?: string;
   status: string;
   appointmentId: number;
 }
@@ -22,5 +23,16 @@ export class SessionService {
 
   getAll(): Observable<Session[]> {
     return this.http.get<Session[]>(this.apiUrl);
+  }
+
+  getById(id: number): Observable<Session> {
+    return this.http.get<Session>(`${this.apiUrl}/${id}`);
+  }
+
+  saveNotes(id: number, notes: string): Observable<void> {
+    return this.http.put<void>(
+      `${this.apiUrl}/${id}/notes`,
+      { notes }
+    );
   }
 }

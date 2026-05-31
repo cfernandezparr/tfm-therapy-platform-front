@@ -1,9 +1,94 @@
 <nav *ngIf="isLogged()" class="navbar">
+
   <div class="nav-left">
-    <a routerLink="/dashboard">Dashboard</a>
+    <a routerLink="/dashboard">Inicio</a>
   </div>
 
   <div class="nav-right">
-    <button (click)="logout()">Logout</button>
+
+    <div
+      class="dropdown"
+      *ngIf="user"
+      (mouseleave)="closeDropdown()"
+    >
+
+      <button
+        class="dropdown-btn"
+        (mouseenter)="dropdownOpen = true"
+      >
+        Opciones
+      </button>
+
+      <div
+        class="dropdown-content"
+        *ngIf="dropdownOpen"
+      >
+
+        <ng-container *ngIf="isUser()">
+
+          <a
+            routerLink="/book"
+            (click)="closeDropdown()"
+          >
+            Reservar cita
+          </a>
+
+          <a
+            *ngIf="!user.therapistRequested"
+            (click)="requestTherapist()"
+          >
+            Solicitar ser terapeuta
+          </a>
+
+          <a
+            routerLink="/settings"
+            (click)="closeDropdown()"
+          >
+            Modificar foto de perfil
+          </a>
+
+        </ng-container>
+
+        <ng-container *ngIf="isTherapist()">
+
+          <a
+            routerLink="/availability"
+            (click)="closeDropdown()"
+          >
+            Gestionar disponibilidad
+          </a>
+
+          <a
+            routerLink="/settings"
+            (click)="closeDropdown()"
+          >
+            Modificar foto de perfil
+          </a>
+
+        </ng-container>
+
+        <ng-container *ngIf="isAdmin()">
+
+          <a
+            routerLink="/settings"
+            (click)="closeDropdown()"
+          >
+            Modificar foto de perfil
+          </a>
+
+        </ng-container>
+
+      </div>
+
+    </div>
+
+    <button
+      class="logout-btn"
+      (click)="logout()"
+    >
+      Logout
+    </button>
+
   </div>
+
 </nav>

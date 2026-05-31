@@ -1,38 +1,152 @@
-<div class="booking">
+<div class="booking-container">
 
   <h1>Reservar cita</h1>
 
-  <div class="section">
-    <label>Seleccionar terapeuta</label>
-    <select [(ngModel)]="selectedTherapistId" (change)="onTherapistChange()">
-      <option [ngValue]="null">Selecciona...</option>
-      <option *ngFor="let t of therapists" [ngValue]="t.id">
-        {{ t.email }}
-      </option>
-    </select>
+  <p class="subtitle">
+    Selecciona un terapeuta para consultar su disponibilidad.
+  </p>
+
+  <div class="therapists-grid">
+
+    <div
+      *ngFor="let therapist of therapists"
+      class="therapist-card"
+    >
+
+      <img
+        class="therapist-avatar"
+        [src]="therapist.avatarUrl || ('https://ui-avatars.com/api/?background=3b82f6&color=fff&size=128&name=' + therapist.firstName + '+' + therapist.lastName)"
+        alt="Avatar"
+      >
+
+      <h3>
+        {{ therapist.firstName }}
+        {{ therapist.lastName }}
+      </h3>
+
+      <p class="therapist-email">
+        {{ therapist.email }}
+      </p>
+
+      <button
+        class="book-btn"
+        (click)="openBookingModal(therapist)"
+      >
+        Reservar cita
+      </button>
+
+    </div>
+
   </div>
 
-  <div class="section">
-    <label>Fecha</label>
-    <input type="date" [(ngModel)]="selectedDate" (change)="onDateChange()" [min]="minDate">
+  <!-- MODAL -->
+
+  <div
+    class="modal-overlay"
+    *ngIf="showModal"
+  >
+
+    <div class="booking-modal">
+
+      <div class="modal-header">
+
+        <h2>
+          Reservar cita
+        </h2>
+
+        <button
+          class="close-btn"
+          (click)="closeModal()"
+        >
+          ✕
+        </button>
+
+      </div>
+
+      <div *ngIf="selectedTherapist">
+
+        <div class="selected-therapist">
+
+          <img
+            class="modal-avatar"
+            [src]="selectedTherapist.avatarUrl || ('https://ui-avatars.com/api/?background=3b82f6&color=fff&size=128&name=' + selectedTherapist.firstName + '+' + selectedTherapist.lastName)"
+            alt="Avatar"
+          >
+
+          <div>
+
+            <h3>
+              {{ selectedTherapist.firstName }}
+              {{ selectedTherapist.lastName }}
+            </h3>
+
+            <p>
+              {{ selectedTherapist.email }}
+            </p>
+
+          </div>
+
+        </div>
+
+        <div class="section">
+
+          <label>Fecha</label>
+
+          <input
+            type="date"
+            [(ngModel)]="selectedDate"
+            (change)="onDateChange()"
+            [min]="minDate"
+          >
+
+        </div>
+
+        <div class="section">
+
+          <label>Hora disponible</label>
+
+          <select [(ngModel)]="selectedHour">
+
+            <option [ngValue]="null">
+              Selecciona una hora
+            </option>
+
+            <option
+              *ngFor="let h of availableHours"
+              [ngValue]="h"
+            >
+              {{ h }}:00
+            </option>
+
+          </select>
+
+        </div>
+
+        <div
+          class="no-hours"
+          *ngIf="selectedDate && availableHours.length === 0"
+        >
+          No hay disponibilidad para ese día.
+        </div>
+
+        <button
+          class="confirm-btn"
+          (click)="createAppointment()"
+        >
+          Confirmar reserva
+        </button>
+
+      </div>
+
+      <p
+        class="error"
+        *ngIf="error"
+      >
+        {{ error }}
+      </p>
+
+    </div>
+
   </div>
-
-  <div class="section">
-    <label>Hora</label>
-    <select [(ngModel)]="selectedHour">
-      <option [ngValue]="null">Selecciona...</option>
-      <option *ngFor="let h of availableHours" [ngValue]="h">
-        {{ h }}:00
-      </option>
-    </select>
-  </div>
-
-  <div *ngIf="selectedDate && availableHours.length === 0">
-    No hay disponibilidad para este día
-  </div>
-
-  <button (click)="createAppointment()">Reservar</button>
-
-  <p class="error" *ngIf="error">{{ error }}</p>
 
 </div>

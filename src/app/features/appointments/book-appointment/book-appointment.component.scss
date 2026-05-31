@@ -1,19 +1,186 @@
-.booking {
-  max-width: 500px;
-  margin: 60px auto;
-  padding: 1rem;
+.booking-container {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 20px;
+}
+
+.booking-container h1 {
+  text-align: center;
+  color: #1e293b;
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  text-align: center;
+  color: #64748b;
+  margin-bottom: 35px;
+}
+
+.therapists-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+.therapist-card {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  text-align: center;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  transition: transform 0.2s ease;
+}
+
+.therapist-card:hover {
+  transform: translateY(-4px);
+}
+
+.therapist-avatar {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #3b82f6;
+  margin-bottom: 16px;
+}
+
+.therapist-card h3 {
+  margin-bottom: 8px;
+  color: #1e293b;
+}
+
+.therapist-email {
+  color: #64748b;
+  margin-bottom: 18px;
+  word-break: break-word;
+}
+
+.book-btn {
+  width: 100%;
+  border: none;
+  border-radius: 10px;
+  padding: 12px;
+  background: #3b82f6;
+  color: white;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.book-btn:hover {
+  background: #2563eb;
+}
+
+/* MODAL */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.65);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.booking-modal {
+  background: white;
+  width: 90%;
+  max-width: 550px;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.modal-header h2 {
+  margin: 0;
+  color: #1e293b;
+}
+
+.close-btn {
+  background: transparent;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+  width: auto;
+  color: #64748b;
+}
+
+.selected-therapist {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.modal-avatar {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #3b82f6;
+}
+
+.selected-therapist h3 {
+  margin: 0 0 4px 0;
+}
+
+.selected-therapist p {
+  margin: 0;
+  color: #64748b;
 }
 
 .section {
-  margin-bottom: 1rem;
+  margin-bottom: 18px;
 }
 
-select, input {
-  width: 100%;
-  padding: 0.5rem;
+.section label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #1e293b;
 }
 
-button {
-  margin-top: 1rem;
+.section input,
+.section select {
   width: 100%;
+  padding: 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  font-size: 14px;
+}
+
+.confirm-btn {
+  width: 100%;
+  margin-top: 10px;
+  padding: 14px;
+  border: none;
+  border-radius: 10px;
+  background: #22c55e;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.confirm-btn:hover {
+  background: #16a34a;
+}
+
+.no-hours {
+  margin-bottom: 16px;
+  color: #dc2626;
+  font-weight: 600;
+}
+
+.error {
+  margin-top: 16px;
+  color: #dc2626;
+  text-align: center;
+  font-weight: 600;
 }

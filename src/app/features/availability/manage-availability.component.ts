@@ -30,6 +30,19 @@ export class ManageAvailabilityComponent implements OnInit {
     });
   }
 
+  getDayName(day: string): string {
+
+    const daysMap: { [key: string]: string } = {
+      MONDAY: 'Lunes',
+      TUESDAY: 'Martes',
+      WEDNESDAY: 'Miércoles',
+      THURSDAY: 'Jueves',
+      FRIDAY: 'Viernes'
+    };
+
+    return daysMap[day] || day;
+  }
+
   toggleSlot(day: string, hour: number) {
 
     const exists = this.selectedSlots.some(
@@ -37,12 +50,13 @@ export class ManageAvailabilityComponent implements OnInit {
     );
 
     if (exists) {
-      
+
       this.selectedSlots = this.selectedSlots.filter(
         s => !(s.dayOfWeek === day && s.hour === hour)
       );
+
     } else {
-      
+
       this.selectedSlots = [
         ...this.selectedSlots,
         { dayOfWeek: day, hour }
